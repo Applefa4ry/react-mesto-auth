@@ -19,6 +19,7 @@ export const register = (email, password) => {
     return getResponseData(response);
   })
   .then((res) => {
+    console.log(res)
     return res;
   })
   .catch((err) => console.log(err));

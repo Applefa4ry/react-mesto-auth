@@ -18,6 +18,6 @@
   transition-delay: 0s, 300ms, 300ms;
 }
 
-.popup:nth-of-type(3){
+.popup:nth-of-type(5){
   background-color: rgba(0, 0, 0, .9);
 }

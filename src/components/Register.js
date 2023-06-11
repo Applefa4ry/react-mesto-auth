@@ -5,29 +5,29 @@ import * as auth from "../utils/auth"
 
 function Register(props){
   const navigate = useNavigate();
+  const [isLoading, setIsLoading] = React.useState(false)
 
   const handleSubmit = (e, formValue, setFormValue) => {
     e.preventDefault();
-    e.target.lastChild.textContent = "Регистрация...";
+
     auth.register(formValue.email,formValue.password).then((res) => {
+      console.log("Привет")
+      setIsLoading(true)
       if(res){
-        props.openTooltip();
+        props.handleRegister(true)
         navigate('/sign-in', {replace: true});
       }
-    })
-    .then(() => {
       setFormValue({email:"", password:""})
-      props.handleRegister()
       props.openTooltip();
-      e.target.lastChild.textContent = "Зарегистрироваться";
     })
     .catch((err) => {
       console.log(err);
-    });
+    })
+    .finally(() => setIsLoading(false));
   }
   return (
     <>
-      <SignForm title="Регистрация" buttonText="Зарегистрироваться" onSubmit={handleSubmit} />
+      <SignForm title="Регистрация" buttonText={isLoading?"Регистрация...":"Зарегистрироваться"} onSubmit={handleSubmit} />
       <Link className="sign__link" to="/sign-in">Уже зарегистрированы? Войти</Link>
     </>
   )

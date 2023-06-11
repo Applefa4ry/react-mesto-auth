@@ -47,8 +47,8 @@ function App() {
     }
   }
 
-  const handleRegister = () => {
-    setIsRegister(true)
+  const handleRegister = (e) => {
+    setIsRegister(e)
   }
   
   const handleLogin = () => {
@@ -107,14 +107,7 @@ function App() {
   function handleCardLike(card, setCards){
     const isLiked = card.likes.some(i => i._id === currentUser._id);
 
-    !isLiked?
-    api.addLike(card._id)
-      .then(newCard => {
-        setCards(state => state.map(c => c._id === card._id ? newCard : c))
-      })
-      .catch(err => console.log(`Ошибка ${err}`))
-    :
-    api.deleteLike(card._id)
+    !isLiked? api.addLike(card._id) : api.deleteLike(card._id)
     .then(newCard => {
       setCards(state => state.map(c => c._id === card._id ? newCard : c))
     })
@@ -140,11 +133,11 @@ function App() {
       .catch(err => console.log(`Ошибка ${err}`))
   }
 
-  function handleUpdateAvatar(data,e){
+  function handleUpdateAvatar(data,e, setIsLoading){
     api.setUserAvatarOnServer(data)
       .then(data => {
         setCurrentUser(data);
-        e.target.lastChild.textContent = "Сохранить";
+        setIsLoading(false)
         e.target.reset();
         closeAllPopups();
       })
@@ -171,12 +164,12 @@ function App() {
         <EditAvatarPopup onUpdateAvatar={handleUpdateAvatar} isOpen={isEditAvatarPopupOpen} onClose={closeAllPopups} />
         <AddPlacePopup onAddNewCard={handleAddNewCard} isOpen={isAddPlacePopupOpen} onClose={closeAllPopups} />
         <ImagePopup card={selectedCard} onClose={closeAllPopups} isOpen={isImagePopupOpen} />
-        <InfoTooltip isRegister={Register} onClose={closeAllPopups} isOpen={isInfoTooltipOpen} />
+        <InfoTooltip isRegister={isRegister} onClose={closeAllPopups} isOpen={isInfoTooltipOpen} />
         
         <Header loggedIn={loggedIn} email={email} onLogOut={handleLogOut} />
         <Routes>
           <Route path="/" element={<ProtectedRouteElement cards={cards} setCards={setCards} handleCardDelete={handleCardDelete} handleCardLike={handleCardLike} handleCardClick={handleCardClick} onEditProfile={handleEditProfileClick} onAddPlace={handleAddPlaceClick} onEditAvatar={handleEditAvatarClick} element={Main} loggedIn={loggedIn}/>} />
-          <Route path="/sign-in" element={<Login handleLogin={handleLogin} />} />
+          <Route path="/sign-in" element={<Login handleLogin={handleLogin} setEmail={setEmail} />} />
           <Route path="/sign-up" element={<Register openTooltip={openTooltip} handleRegister={handleRegister} />} />
         </Routes>
         {false?<Footer />:""}

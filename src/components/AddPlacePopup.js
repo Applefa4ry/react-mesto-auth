@@ -30,7 +30,16 @@ function AddPlacePopup(props){
   }, [props.isOpen]);
   
   return (
-    <PopupWithForm onSubmit={handleSubmit} onClose={props.onClose} isOpen={props.isOpen} id="edit-place" specialDelete={false} question={false} title="Новое место" name="addCard" buttonText="Создать">
+    <PopupWithForm 
+      onSubmit={handleSubmit} 
+      onClose={props.onClose} 
+      isOpen={props.isOpen} 
+      id="edit-place" 
+      specialDelete={false} 
+      question={false} 
+      title="Новое место" 
+      name="addCard" 
+      buttonText="Создать">
           <input onChange={handleChangeName} id="edit-title" minLength="2" maxLength="30" required name="name" className="form__field" placeholder="Название" type="text" />
           <span className="popup__error edit-title-error"></span>
           <input onChange={handleChangeLink} id="edit-url" required name="link" className="form__field" placeholder="Ссылка на картинку" type="url" />

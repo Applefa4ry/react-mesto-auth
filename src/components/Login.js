@@ -5,27 +5,33 @@ import { useNavigate } from "react-router-dom";
 
 function Login(props){
   const navigate = useNavigate();
+  const [isLoading, setIsLoading] = React.useState(false)
 
   const handleSubmit = (e, formValue, setFormValue) => {
     e.preventDefault();
+    setIsLoading(true)
     if (!formValue.email || !formValue.password){
+      setIsLoading(false)
       return;
     }
     e.target.lastChild.textContent = "Вход..."
     auth.authorize(formValue.email, formValue.password)
       .then((res) => {
         if (res.token){
+          props.setEmail(formValue.email)
           setFormValue({email:"", password:""})
           props.handleLogin();
           navigate('/', {replace: true});
         }
-        e.target.lastChild.textContent = "Войти";
       })
-      .catch(err => console.log(err));
+      .catch(err => console.log(err))
+      .finally(() => {
+        setIsLoading(false)
+      });
   }
 
   return (
-    <SignForm title="Вход" buttonText="Войти" onSubmit={handleSubmit} />
+    <SignForm title="Вход" buttonText={isLoading?"Вход...":"Войти"} onSubmit={handleSubmit} />
   )
 }
 
