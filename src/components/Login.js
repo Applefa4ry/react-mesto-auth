@@ -14,7 +14,6 @@ function Login(props){
       setIsLoading(false)
       return;
     }
-    e.target.lastChild.textContent = "Вход..."
     auth.authorize(formValue.email, formValue.password)
       .then((res) => {
         if (res.token){

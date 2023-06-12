@@ -122,37 +122,37 @@ function App() {
       .catch(err => console.log(`Ошибка ${err}`))
   }
 
-  function handleUpdateUser(data,e){
+  function handleUpdateUser(data,e, setIsLoading){
     api.setUserInfoOnServer(data)
       .then(data => {
         setCurrentUser(data);
-        e.target.lastChild.textContent = "Сохранить"
         e.target.reset();
         closeAllPopups();
       })
       .catch(err => console.log(`Ошибка ${err}`))
+      .finally(() => setIsLoading(false))
   }
 
   function handleUpdateAvatar(data,e, setIsLoading){
     api.setUserAvatarOnServer(data)
       .then(data => {
         setCurrentUser(data);
-        setIsLoading(false)
         e.target.reset();
         closeAllPopups();
       })
       .catch(err => console.log(`Ошибка ${err}`))
+      .finally(() => setIsLoading(false))
   }
 
-  function handleAddNewCard(newCard,e){
+  function handleAddNewCard(newCard,e, setIsLoading){
     api.addNewCard(newCard)
       .then(newCard => {
         setCards([newCard, ...cards]);
-        e.target.lastChild.textContent = "Создать"
         e.target.reset();
         closeAllPopups();
       })
       .catch(err => console.log(`Ошибка ${err}`))
+      .finally(() => setIsLoading(false))
   }
 
   return (

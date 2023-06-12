@@ -15,30 +15,34 @@ function EditProfilePopup(props){
 
   const [name, setName] = React.useState('');
   const [description, setDescription] = React.useState('');
+  const [isLoading, setIsLoading] = React.useState(false);
+
+  const nameRef = React.useRef();
+  const deskRef = React.useRef();
 
   function handleChangeName(e) {
-    setName(e.target.value);
+    setName(nameRef.current.value);
   }
   function handleChangeDescription(e) {
-    setDescription(e.target.value);
+    setDescription(deskRef.current.value);
   }
 
   function handleSubmit(e) {
     // Запрещаем браузеру переходить по адресу формы
     e.preventDefault();
-    e.target.lastChild.textContent = "Сохранение..."
+    setIsLoading(true)
     // Передаём значения управляемых компонентов во внешний обработчик
     props.onUpdateUser({
       name: name,
       about: description,
-    },e);
+    },e,setIsLoading);
   } 
 
   return (
-  <PopupWithForm onSubmit={handleSubmit} onClose={props.onClose} isOpen={props.isOpen} id="edit-profile" specialDelete={false} question={false} title="Редактировать профиль" name="editProfile" buttonText="Сохранить">
-    <input value={name || ""} onChange={handleChangeName} id="edit-name" minLength="2" maxLength="40" required placeholder="Имя" name="name" className="form__field" type="text" />
+  <PopupWithForm onSubmit={handleSubmit} onClose={props.onClose} isOpen={props.isOpen} id="edit-profile" specialDelete={false} question={false} title="Редактировать профиль" name="editProfile" buttonText={isLoading?"Сохранение...":"Сохранить"}>
+    <input ref={nameRef} value={name || ""} onChange={handleChangeName} id="edit-name" minLength="2" maxLength="40" required placeholder="Имя" name="name" className="form__field" type="text" />
     <span className="popup__error edit-name-error"></span>
-    <input value={description || ""} onChange={handleChangeDescription} id="edit-job" minLength="2" maxLength="200" required placeholder="Работа" name="about" className="form__field" type="text" />
+    <input ref={deskRef} value={description || ""} onChange={handleChangeDescription} id="edit-job" minLength="2" maxLength="200" required placeholder="Работа" name="about" className="form__field" type="text" />
     <span className="popup__error edit-job-error"></span>
   </PopupWithForm>)
 }

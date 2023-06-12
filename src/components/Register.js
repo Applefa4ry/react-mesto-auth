@@ -11,7 +11,6 @@ function Register(props){
     e.preventDefault();
 
     auth.register(formValue.email,formValue.password).then((res) => {
-      console.log("Привет")
       setIsLoading(true)
       if(res){
         props.handleRegister(true)
